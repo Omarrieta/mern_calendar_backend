@@ -2,7 +2,9 @@ import { Evento } from "../models/Evento.js";
 
 export const getEvents = async(req , res) => {
     
-    const events = await Evento.find()
+    const uid = req.uid;
+   
+    const events = await Evento.find({ user: uid})
                                .populate('user', 'name');
     
     
@@ -16,16 +18,17 @@ export const getEvents = async(req , res) => {
 export const createEvent = async(req, res) => {
     
    const evento = new Evento(req.body);
-
+   
    try {
         
         evento.user = req.uid;
+        
 
-        const eventoGuardado = await evento.save();
+        //const eventoGuardado = await evento.save();
 
         res.json({
             ok: true,
-            evento: eventoGuardado
+            //evento: eventoGuardado
         });
 
 
